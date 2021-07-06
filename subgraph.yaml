@@ -1,0 +1,29 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: ClipperExchangeInterface
+    network: mainnet
+    source:
+      address: "0x2e9c6dcdca22a5952a88c4b18edb5b54c5155bc9"
+      abi: ClipperExchangeInterface
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - OwnershipTransferred
+        - SwapFeeModified
+        - Swapped
+      abis:
+        - name: ClipperExchangeInterface
+          file: ./abis/ClipperExchangeInterface.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: SwapFeeModified(uint256)
+          handler: handleSwapFeeModified
+        - event: Swapped(address,address,address,uint256,uint256,bytes)
+          handler: handleSwapped
+      file: ./src/mapping.ts
